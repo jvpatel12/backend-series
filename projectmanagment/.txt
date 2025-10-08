@@ -1,0 +1,72 @@
+first access the json data in throw the request the can 
+use a express.json() middleware 
+after some time data acce
+fetch  thruw a url the can use 
+express.urlencoded('extend';true,limit provide )
+express.static('public') can access the photos
+Load .env and override any existing environment variables so the
+ values in the file (e.g. username=jeel) take precedence over OS envs.
+ 
+the have created a object and task than can be used in other files 
+to avoid hardcoding the value again and again
+
+hooks- store the data and managing the data the use hooks in save 
+the save two types one is pre and second is post
+
+encryption - encryption can use in security attaching in password 
+example In password can be attaching a hash value 
+
+
+json web token - authentication,authenticating
+
+json web token two types with data and without data
+the share token to client with encryption 
+
+in token accessToken and refreshToken 
+
+
+register any kind of email the have some steps 
+1.take some data
+2.validate the data
+3.check in DB if user already exists
+4.SAVED the new  user
+5.user verification => email
+
+
+mailtraper this use send mail the user
+
+
+login any kind user the have some process
+1.take data from user
+2.validate 
+3. if user exist 
+4. if password is correct
+5. Generate Tokens
+6. send tokens in cookies
+
+forgotPasswordRequest
+
+Accepts { email }.
+Generates a temporary reset token, stores the hashed token and expiry on the user, sends a reset email (re-using your mail helper).
+Returns 200 "Password reset email sent successfully".
+resetPassword
+
+Accepts { token, id, newPassword }.
+Verifies token, expiry, updates the user's password, clears reset fields, and returns 200 "Password reset successfully".
+changeCurrentPassword
+
+Protected route (expects req.user from verifyJwt).
+Accepts { currentPassword, newPassword }.
+Verifies current password, updates to new password, returns 200 "Password changed successfully".
+What I changed
+
+Imported crypto (used by your model token generation functions).
+Implemented token hashing checks by calling the user's helper generateHash(token) (your model already had a generateTemporyToken and generateHash used elsewhere — ensure generateHash actually exists; if not, we can add it).
+Next steps and checks
+
+Confirm User model exposes generateHash method. If not, I can add it (simple wrapper around crypto.createHash('sha256')...).
+Wire new routes under auth.routers.js, for example:
+POST /forgot-password -> forgotPasswordRequest
+POST /reset-password -> resetPassword
+POST /change-password -> verifyJwt -> changeCurrentPassword
+I can add the route wiring and a quick test (register → forgot → reset → login) using your terminal if you want.
