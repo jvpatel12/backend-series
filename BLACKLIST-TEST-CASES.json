@@ -1,0 +1,227 @@
+{
+  "blacklistLogoutTest": {
+    "description": "Test cases for Blacklist Model and Logout functionality",
+    "testCases": [
+      {
+        "id": 1,
+        "name": "Register New User",
+        "method": "POST",
+        "endpoint": "/auth/register",
+        "body": {
+          "email": "testuser@example.com",
+          "name": "Test User",
+          "password": "password123"
+        },
+        "expectedStatus": 201,
+        "expectedResponse": {
+          "user": {
+            "email": "testuser@example.com",
+            "name": "Test User"
+          },
+          "token": "eyJhbGciOiJIUzI1NiIs..."
+        },
+        "notes": "Save the token for next steps"
+      },
+      {
+        "id": 2,
+        "name": "Login and Get Token",
+        "method": "POST",
+        "endpoint": "/auth/login",
+        "body": {
+          "email": "testuser@example.com",
+          "password": "password123"
+        },
+        "expectedStatus": 201,
+        "expectedResponse": {
+          "user": {
+            "email": "testuser@example.com",
+            "name": "Test User"
+          },
+          "token": "eyJhbGciOiJIUzI1NiIs..."
+        },
+        "notes": "Token will be used for protected endpoints"
+      },
+      {
+        "id": 3,
+        "name": "Use Token - Get User Profile (Should Work)",
+        "method": "GET",
+        "endpoint": "/auth/user",
+        "headers": {
+          "Authorization": "Bearer <token_from_step_2>"
+        },
+        "expectedStatus": 200,
+        "expectedResponse": {
+          "user": {
+            "email": "testuser@example.com",
+            "name": "Test User"
+          },
+          "message": "User fetched successfully"
+        },
+        "notes": "Token should be valid at this point"
+      },
+      {
+        "id": 4,
+        "name": "Logout User - Add Token to Blacklist",
+        "method": "POST",
+        "endpoint": "/auth/logout",
+        "headers": {
+          "Authorization": "Bearer <token_from_step_2>"
+        },
+        "expectedStatus": 200,
+        "expectedResponse": {
+          "message": "Logged out successfully",
+          "logoutTime": "2026-04-01T10:30:00.000Z"
+        },
+        "notes": "Token is now added to blacklist",
+        "databaseAction": {
+          "collection": "blacklists",
+          "operation": "insertOne",
+          "data": {
+            "token": "<same_token>",
+            "user": "<user_id>",
+            "expiresAt": "<token_expiration>",
+            "reason": "LOGOUT"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "name": "Use Same Token Again - Should Fail (Blacklisted)",
+        "method": "GET",
+        "endpoint": "/auth/user",
+        "headers": {
+          "Authorization": "Bearer <token_from_step_2>"
+        },
+        "expectedStatus": 401,
+        "expectedResponse": {
+          "message": "Unauthorized access token has been revoked"
+        },
+        "notes": "Token is now blacklisted and cannot be used",
+        "why": "Middleware checks blacklist before allowing access"
+      },
+      {
+        "id": 6,
+        "name": "Try Any Protected Endpoint with Blacklisted Token",
+        "method": "GET",
+        "endpoint": "/account/user",
+        "headers": {
+          "Authorization": "Bearer <token_from_step_2>"
+        },
+        "expectedStatus": 401,
+        "expectedResponse": {
+          "message": "Unauthorized access token has been revoked"
+        },
+        "notes": "All protected endpoints check blacklist"
+      },
+      {
+        "id": 7,
+        "name": "Login Again - Get New Token",
+        "method": "POST",
+        "endpoint": "/auth/login",
+        "body": {
+          "email": "testuser@example.com",
+          "password": "password123"
+        },
+        "expectedStatus": 201,
+        "expectedResponse": {
+          "token": "eyJhbGciOiJIUzI1NiIs..." 
+        },
+        "notes": "New token issued, different from previous",
+        "why": "New login creates new JWT token"
+      },
+      {
+        "id": 8,
+        "name": "Use New Token (Should Work)",
+        "method": "GET",
+        "endpoint": "/auth/user",
+        "headers": {
+          "Authorization": "Bearer <new_token_from_step_7>"
+        },
+        "expectedStatus": 200,
+        "expectedResponse": {
+          "user": {
+            "email": "testuser@example.com"
+          },
+          "message": "User fetched successfully"
+        },
+        "notes": "New token is not blacklisted"
+      }
+    ]
+  },
+  "blacklistDatabaseStructure": {
+    "collection": "blacklists",
+    "indexes": [
+      {
+        "name": "_id_",
+        "fields": { "_id": 1 }
+      },
+      {
+        "name": "token_1",
+        "fields": { "token": 1 },
+        "unique": true
+      },
+      {
+        "name": "user_1",
+        "fields": { "user": 1 }
+      },
+      {
+        "name": "expiresAt_1",
+        "fields": { "expiresAt": 1 },
+        "expireAfterSeconds": 0
+      }
+    ],
+    "sampleDocument": {
+      "_id": "ObjectId('507f1f77bcf86cd799439011')",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "user": "ObjectId('507f1f77bcf86cd799439010')",
+      "expiresAt": "ISODate('2026-04-06T10:30:00.000Z')",
+      "reason": "LOGOUT",
+      "createdAt": "ISODate('2026-04-01T10:30:00.000Z')"
+    }
+  },
+  "mongoDBQueries": {
+    "findBlacklistedToken": "db.blacklists.findOne({ token: 'eyJhbGci...' })",
+    "findUserBlacklist": "db.blacklists.find({ user: ObjectId('507f...') })",
+    "countBlacklistEntries": "db.blacklists.countDocuments()",
+    "deleteExpiredEntries": "db.blacklists.deleteMany({ expiresAt: { $lt: new Date() } })",
+    "findRecentLogouts": "db.blacklists.find({ createdAt: { $gte: new Date(Date.now() - 86400000) } })",
+    "checkIfTokenBlacklisted": "db.blacklists.exists({ token: 'eyJhbGci...' })"
+  },
+  "flowDiagram": {
+    "loginFlow": "User Credentials → [Verify] → [Generate JWT Token] → [Return Token]",
+    "protectedEndpointFlow": "Request with Token → [Decode JWT] → [Check Blacklist] → [Verify User] → [Grant Access]",
+    "logoutFlow": "Request with Token → [Verify Token] → [Add to Blacklist] → [Clear Cookie] → [Return Success]",
+    "afterLogoutFlow": "New Request with Same Token → [Decode JWT] → [Check Blacklist] → [Found!] → [Reject 401]"
+  },
+  "performanceConsiderations": {
+    "tokenLookup": {
+      "query": "findOne({ token })",
+      "index": "token_1 (indexed)",
+      "complexity": "O(1) - Constant time lookup",
+      "cacheStrategy": "Consider Redis for frequent checks"
+    },
+    "userLookup": {
+      "query": "find({ user })",
+      "index": "user_1 (indexed)",
+      "complexity": "O(n) - Linear scan of user's blacklist"
+    },
+    "ttlCleanup": {
+      "type": "TTL Index",
+      "expireAfter": "0 seconds from expiresAt",
+      "automatic": true,
+      "cost": "Low - MongoDB handles deletion"
+    }
+  },
+  "bestPractices": [
+    "Always check token in blacklist before granting access",
+    "Use indexed queries for performance",
+    "Set expiration time to match JWT expiration",
+    "Log logout events for audit trail",
+    "Clean old entries automatically via TTL",
+    "Consider caching blacklist in Redis for high-traffic apps",
+    "Don't store sensitive data in token",
+    "Use short-lived tokens (5-7 days max)",
+    "Implement refresh tokens for long sessions",
+    "Monitor blacklist growth regularly"
+  ]
+}

@@ -1,0 +1,369 @@
+{
+  "apiVersion": "2.0.0",
+  "title": "Bank Application API - Complete Documentation",
+  "baseUrl": "http://localhost:5000/api",
+  "description": "Complete API documentation for Bank Application with all 8 endpoints",
+  "lastUpdated": "2026-04-01",
+  "totalEndpoints": 8,
+  "apis": {
+    "authentication": {
+      "category": "Authentication",
+      "description": "User authentication and session management endpoints",
+      "endpoints": [
+        {
+          "id": 1,
+          "name": "Register User",
+          "method": "POST",
+          "endpoint": "/auth/register",
+          "fullUrl": "http://localhost:5000/api/auth/register",
+          "protected": false,
+          "description": "Register a new user account",
+          "requestHeaders": {
+            "Content-Type": "application/json"
+          },
+          "requestBody": {
+            "email": "john@example.com",
+            "name": "John Doe",
+            "password": "password123"
+          },
+          "responseSuccess": {
+            "statusCode": 201,
+            "body": {
+              "user": {
+                "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+                "email": "john@example.com",
+                "name": "John Doe"
+              },
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+              "message": "user create succuessfully"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "name": "Login User",
+          "method": "POST",
+          "endpoint": "/auth/login",
+          "fullUrl": "http://localhost:5000/api/auth/login",
+          "protected": false,
+          "description": "Login with email and password",
+          "requestHeaders": {
+            "Content-Type": "application/json"
+          },
+          "requestBody": {
+            "email": "john@example.com",
+            "password": "password123"
+          },
+          "responseSuccess": {
+            "statusCode": 201,
+            "body": {
+              "user": {
+                "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+                "email": "john@example.com",
+                "name": "John Doe"
+              },
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+              "message": "user fetch the sucessfully"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "name": "Get User Profile",
+          "method": "GET",
+          "endpoint": "/auth/user",
+          "fullUrl": "http://localhost:5000/api/auth/user",
+          "protected": true,
+          "description": "Get authenticated user profile information",
+          "requestHeaders": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "responseSuccess": {
+            "statusCode": 200,
+            "body": {
+              "user": {
+                "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+                "email": "john@example.com",
+                "name": "John Doe",
+                "createdAt": "2025-03-20T10:30:00.000Z",
+                "updatedAt": "2025-03-20T10:30:00.000Z"
+              },
+              "message": "User fetched successfully"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "name": "Logout User",
+          "method": "POST",
+          "endpoint": "/auth/logout",
+          "fullUrl": "http://localhost:5000/api/auth/logout",
+          "protected": true,
+          "description": "Logout user and clear session token",
+          "requestHeaders": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "responseSuccess": {
+            "statusCode": 200,
+            "body": {
+              "message": "Logged out successfully"
+            }
+          },
+          "notes": "Clears the token cookie and logs out the user"
+        }
+      ]
+    },
+    "accounts": {
+      "category": "Account Management",
+      "description": "Bank account management endpoints",
+      "endpoints": [
+        {
+          "id": 5,
+          "name": "Create Account",
+          "method": "POST",
+          "endpoint": "/account/create",
+          "fullUrl": "http://localhost:5000/api/account/create",
+          "protected": true,
+          "description": "Create a new bank account for authenticated user",
+          "requestHeaders": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "responseSuccess": {
+            "statusCode": 201,
+            "body": {
+              "account": {
+                "_id": "65f8c2b3b3d4e5f6g7h8i9j1",
+                "user": "65f8c1a2b3d4e5f6g7h8i9j0",
+                "status": "ACTIVE",
+                "currency": "INR",
+                "createdAt": "2025-03-20T10:35:00.000Z",
+                "updatedAt": "2025-03-20T10:35:00.000Z"
+              }
+            }
+          }
+        },
+        {
+          "id": 6,
+          "name": "Get User Account",
+          "method": "GET",
+          "endpoint": "/account/user",
+          "fullUrl": "http://localhost:5000/api/account/user",
+          "protected": true,
+          "description": "Get primary bank account for authenticated user",
+          "requestHeaders": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "responseSuccess": {
+            "statusCode": 200,
+            "body": {
+              "account": {
+                "_id": "65f8c2b3b3d4e5f6g7h8i9j1",
+                "user": {
+                  "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+                  "email": "john@example.com",
+                  "name": "John Doe"
+                },
+                "status": "ACTIVE",
+                "currency": "INR",
+                "createdAt": "2025-03-20T10:35:00.000Z",
+                "updatedAt": "2025-03-20T10:35:00.000Z"
+              },
+              "message": "Account fetched successfully"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "name": "Get All Accounts",
+          "method": "GET",
+          "endpoint": "/account/all",
+          "fullUrl": "http://localhost:5000/api/account/all",
+          "protected": true,
+          "description": "Get all bank accounts for authenticated user",
+          "requestHeaders": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "responseSuccess": {
+            "statusCode": 200,
+            "body": {
+              "accounts": [
+                {
+                  "_id": "65f8c2b3b3d4e5f6g7h8i9j1",
+                  "user": {
+                    "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+                    "email": "john@example.com",
+                    "name": "John Doe"
+                  },
+                  "status": "ACTIVE",
+                  "currency": "INR",
+                  "createdAt": "2025-03-20T10:35:00.000Z",
+                  "updatedAt": "2025-03-20T10:35:00.000Z"
+                },
+                {
+                  "_id": "65f8c2b3b3d4e5f6g7h8i9j2",
+                  "user": {
+                    "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+                    "email": "john@example.com",
+                    "name": "John Doe"
+                  },
+                  "status": "ACTIVE",
+                  "currency": "USD",
+                  "createdAt": "2025-03-21T10:35:00.000Z",
+                  "updatedAt": "2025-03-21T10:35:00.000Z"
+                }
+              ],
+              "totalAccounts": 2,
+              "message": "All accounts fetched successfully"
+            }
+          }
+        }
+      ]
+    },
+    "transactions": {
+      "category": "Transactions",
+      "description": "Transaction and balance management endpoints",
+      "endpoints": [
+        {
+          "id": 8,
+          "name": "Get Account Balance",
+          "method": "GET",
+          "endpoint": "/transaction/balance/:accountId",
+          "fullUrl": "http://localhost:5000/api/transaction/balance/65f8c2b3b3d4e5f6g7h8i9j1",
+          "protected": true,
+          "description": "Get current balance of a specific account",
+          "urlParameters": {
+            "accountId": "Account ID (required)"
+          },
+          "requestHeaders": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "responseSuccess": {
+            "statusCode": 200,
+            "body": {
+              "account": {
+                "_id": "65f8c2b3b3d4e5f6g7h8i9j1",
+                "accountNumber": "65f8c2b3b3d4e5f6g7h8i9j1",
+                "balance": 50000,
+                "currency": "INR",
+                "status": "ACTIVE"
+              },
+              "message": "Balance fetched successfully"
+            }
+          },
+          "notes": "User must own the account to view balance"
+        },
+        {
+          "id": 9,
+          "name": "System Initial Funds",
+          "method": "POST",
+          "endpoint": "/transaction/system/initial-funds",
+          "fullUrl": "http://localhost:5000/api/transaction/system/initial-funds",
+          "protected": true,
+          "requiresSystemUser": true,
+          "description": "Add initial funds to an account (System User Only)",
+          "requestHeaders": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "Content-Type": "application/json"
+          },
+          "requestBody": {
+            "toAccount": "65f8c2b3b3d4e5f6g7h8i9j1",
+            "amount": 50000,
+            "idempotencyKey": "unique-key-12345"
+          },
+          "responseSuccess": {
+            "statusCode": 201,
+            "body": {
+              "message": "Initial funds added successfully",
+              "transaction": {
+                "_id": "65f8c3c4c4e5f6g7h8i9j100",
+                "fromAccount": "system-account-id",
+                "toAccount": "65f8c2b3b3d4e5f6g7h8i9j1",
+                "amount": 50000,
+                "type": "INITIAL_FUND",
+                "status": "COMPLETED",
+                "idempotencyKey": "unique-key-12345",
+                "createdAt": "2025-03-20T10:40:00.000Z"
+              }
+            }
+          },
+          "notes": "Only system users can add initial funds. Uses idempotency key to prevent duplicate transactions."
+        }
+      ]
+    }
+  },
+  "curlExamples": {
+    "register": "curl -X POST http://localhost:5000/api/auth/register -H 'Content-Type: application/json' -d '{\"email\":\"john@example.com\",\"name\":\"John Doe\",\"password\":\"password123\"}'",
+    "login": "curl -X POST http://localhost:5000/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"john@example.com\",\"password\":\"password123\"}'",
+    "getProfile": "curl -H 'Authorization: Bearer YOUR_TOKEN' http://localhost:5000/api/auth/user",
+    "logout": "curl -X POST -H 'Authorization: Bearer YOUR_TOKEN' http://localhost:5000/api/auth/logout",
+    "createAccount": "curl -X POST -H 'Authorization: Bearer YOUR_TOKEN' http://localhost:5000/api/account/create",
+    "getAccountUser": "curl -H 'Authorization: Bearer YOUR_TOKEN' http://localhost:5000/api/account/user",
+    "getAllAccounts": "curl -H 'Authorization: Bearer YOUR_TOKEN' http://localhost:5000/api/account/all",
+    "getBalance": "curl -H 'Authorization: Bearer YOUR_TOKEN' http://localhost:5000/api/transaction/balance/ACCOUNT_ID",
+    "initialFunds": "curl -X POST -H 'Authorization: Bearer SYSTEM_TOKEN' -H 'Content-Type: application/json' -d '{\"toAccount\":\"ACCOUNT_ID\",\"amount\":50000,\"idempotencyKey\":\"key123\"}' http://localhost:5000/api/transaction/system/initial-funds"
+  },
+  "authenticationMechanisms": {
+    "description": "How to authenticate requests",
+    "method1": "Bearer Token in Header",
+    "example1": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "method2": "Token in Cookies",
+    "example2": "Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  },
+  "errorCodes": {
+    "200": {
+      "description": "OK - Request successful",
+      "statusCode": 200
+    },
+    "201": {
+      "description": "Created - Resource created successfully",
+      "statusCode": 201
+    },
+    "400": {
+      "description": "Bad Request - Invalid input data",
+      "statusCode": 400,
+      "examples": [
+        "Missing required fields",
+        "Invalid email format",
+        "Amount must be positive"
+      ]
+    },
+    "401": {
+      "description": "Unauthorized - Authentication failed",
+      "statusCode": 401,
+      "examples": [
+        "Invalid or missing token",
+        "Token has expired",
+        "Invalid credentials"
+      ]
+    },
+    "403": {
+      "description": "Forbidden - Permission denied",
+      "statusCode": 403,
+      "examples": [
+        "Not a system user",
+        "Don't have access to this account"
+      ]
+    },
+    "404": {
+      "description": "Not Found - Resource not found",
+      "statusCode": 404,
+      "examples": [
+        "User not found",
+        "Account not found",
+        "No accounts found for this user"
+      ]
+    },
+    "500": {
+      "description": "Internal Server Error",
+      "statusCode": 500
+    }
+  },
+  "summary": {
+    "totalEndpoints": 9,
+    "authenticationEndpoints": 4,
+    "accountEndpoints": 3,
+    "transactionEndpoints": 2,
+    "protectedEndpoints": 7,
+    "publicEndpoints": 2
+  }
+}

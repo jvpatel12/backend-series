@@ -1,0 +1,125 @@
+# Environment Variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+*.env
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Test Files
+test-mongodb.js
+auth-test-data.json
+test-data/
+*.test.js
+*.spec.js
+coverage/
+.nyc_output/
+
+# API Documentation (Local Testing Files)
+API-DOCUMENTATION.json
+Bank-App-Postman-Collection.json
+auth-test-data.json
+api-docs/
+*.postman_collection.json
+
+# LinkedIn Post & Documentation
+LINKEDIN-POST.md
+*.md.bak
+docs/
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.classpath
+*.sublime-project
+*.sublime-workspace
+.vs/
+.vscode-server/
+
+# OS Files
+Thumbs.db
+.DS_Store
+*.log
+
+# Build Output
+dist/
+build/
+out/
+*.js.map
+*.css.map
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+
+# System Files
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+$RECYCLE.BIN/
+
+# Production Build
+production/
+deployment/
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+mongo.log
+
+# Cache
+.cache/
+.eslintcache
+
+# Misc
+.turbo/
+dist-ssr/
+*.local
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# dotenv environment variables file
+.env.*.local
+
+# Debug
+debug.log
+
+# Node REPL history
+.node_repl_history
+
+# Yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# IDE specific files
+*.code-workspace
+.vscode-server/
