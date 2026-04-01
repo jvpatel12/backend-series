@@ -1,0 +1,294 @@
+{
+  "apiVersion": "1.0.0",
+  "title": "Bank Application API Documentation",
+  "baseUrl": "http://localhost:5000/api",
+  "description": "Complete API documentation for Bank Application with all endpoints and examples",
+  "author": "Your Name",
+  "lastUpdated": "2026-04-01",
+  "apis": {
+    "authentication": {
+      "category": "Authentication",
+      "description": "User authentication endpoints",
+      "endpoints": [
+        {
+          "id": 1,
+          "name": "Register User",
+          "method": "POST",
+          "endpoint": "/auth/register",
+          "fullUrl": "http://localhost:5000/api/auth/register",
+          "protected": false,
+          "description": "Register a new user account",
+          "requestHeaders": {
+            "Content-Type": "application/json"
+          },
+          "requestBody": {
+            "email": "john@example.com",
+            "name": "John Doe",
+            "password": "password123"
+          },
+          "responseSuccess": {
+            "statusCode": 201,
+            "body": {
+              "user": {
+                "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+                "email": "john@example.com",
+                "name": "John Doe"
+              },
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWY4YzFhMmIzZDRlNWY2ZzdoOGk5ajAiLCJpYXQiOjE3MTAwMDAwMDAsImV4cCI6MTcxMDI1ODAwMH0.abc123xyz",
+              "message": "user create succuessfully"
+            }
+          },
+          "responseError": {
+            "statusCode": 400,
+            "body": {
+              "message": "user already exists with email"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "name": "Login User",
+          "method": "POST",
+          "endpoint": "/auth/login",
+          "fullUrl": "http://localhost:5000/api/auth/login",
+          "protected": false,
+          "description": "Login with email and password",
+          "requestHeaders": {
+            "Content-Type": "application/json"
+          },
+          "requestBody": {
+            "email": "john@example.com",
+            "password": "password123"
+          },
+          "responseSuccess": {
+            "statusCode": 201,
+            "body": {
+              "user": {
+                "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+                "email": "john@example.com",
+                "name": "John Doe"
+              },
+              "message": "user fetch the sucessfully",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWY4YzFhMmIzZDRlNWY2ZzdoOGk5ajAiLCJpYXQiOjE3MTAwMDAwMDAsImV4cCI6MTcxMDI1ODAwMH0.abc123xyz"
+            }
+          },
+          "responseErrorInvalidEmail": {
+            "statusCode": 401,
+            "body": {
+              "message": "email is not find write correct email"
+            }
+          },
+          "responseErrorInvalidPassword": {
+            "statusCode": 401,
+            "body": {
+              "message": "password is in correct add right password"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "name": "Get User Profile",
+          "method": "GET",
+          "endpoint": "/auth/user",
+          "fullUrl": "http://localhost:5000/api/auth/user",
+          "protected": true,
+          "description": "Get authenticated user profile information",
+          "requestHeaders": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "Content-Type": "application/json"
+          },
+          "requestBody": "No body required",
+          "responseSuccess": {
+            "statusCode": 200,
+            "body": {
+              "user": {
+                "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+                "email": "john@example.com",
+                "name": "John Doe",
+                "createdAt": "2025-03-20T10:30:00.000Z",
+                "updatedAt": "2025-03-20T10:30:00.000Z"
+              },
+              "message": "User fetched successfully"
+            }
+          },
+          "responseErrorInvalidToken": {
+            "statusCode": 401,
+            "body": {
+              "message": "Unauthorized access token is invalid"
+            }
+          },
+          "responseErrorMissingToken": {
+            "statusCode": 401,
+            "body": {
+              "message": "Unauthorized access token is missing"
+            }
+          }
+        }
+      ]
+    },
+    "accounts": {
+      "category": "Account Management",
+      "description": "User account management endpoints",
+      "endpoints": [
+        {
+          "id": 4,
+          "name": "Create Account",
+          "method": "POST",
+          "endpoint": "/account/create",
+          "fullUrl": "http://localhost:5000/api/account/create",
+          "protected": true,
+          "description": "Create a new bank account for authenticated user",
+          "requestHeaders": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "Content-Type": "application/json"
+          },
+          "requestBody": "No body required",
+          "responseSuccess": {
+            "statusCode": 201,
+            "body": {
+              "account": {
+                "_id": "65f8c2b3b3d4e5f6g7h8i9j1",
+                "user": "65f8c1a2b3d4e5f6g7h8i9j0",
+                "status": "ACTIVE",
+                "currency": "INR",
+                "createdAt": "2025-03-20T10:35:00.000Z",
+                "updatedAt": "2025-03-20T10:35:00.000Z"
+              }
+            }
+          },
+          "responseErrorMissingToken": {
+            "statusCode": 401,
+            "body": {
+              "message": "Unauthorized access token is missing"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "name": "Get User Account",
+          "method": "GET",
+          "endpoint": "/account/user",
+          "fullUrl": "http://localhost:5000/api/account/user",
+          "protected": true,
+          "description": "Get bank account details for authenticated user",
+          "requestHeaders": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "Content-Type": "application/json"
+          },
+          "requestBody": "No body required",
+          "responseSuccess": {
+            "statusCode": 200,
+            "body": {
+              "account": {
+                "_id": "65f8c2b3b3d4e5f6g7h8i9j1",
+                "user": {
+                  "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+                  "email": "john@example.com",
+                  "name": "John Doe"
+                },
+                "status": "ACTIVE",
+                "currency": "INR",
+                "createdAt": "2025-03-20T10:35:00.000Z",
+                "updatedAt": "2025-03-20T10:35:00.000Z"
+              },
+              "message": "Account fetched successfully"
+            }
+          },
+          "responseErrorAccountNotFound": {
+            "statusCode": 404,
+            "body": {
+              "message": "Account not found for this user"
+            }
+          },
+          "responseErrorInvalidToken": {
+            "statusCode": 401,
+            "body": {
+              "message": "Unauthorized access token is invalid"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "testCredentials": [
+    {
+      "id": 1,
+      "email": "alice@example.com",
+      "name": "Alice Johnson",
+      "password": "alice@123",
+      "purpose": "Test user 1"
+    },
+    {
+      "id": 2,
+      "email": "bob@example.com",
+      "name": "Bob Smith",
+      "password": "bob@123",
+      "purpose": "Test user 2"
+    },
+    {
+      "id": 3,
+      "email": "charlie@example.com",
+      "name": "Charlie Brown",
+      "password": "charlie@123",
+      "purpose": "Test user 3"
+    }
+  ],
+  "authenticationMechanisms": {
+    "description": "How to authenticate requests",
+    "method1": "Bearer Token in Authorization Header",
+    "example1": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "method2": "Token in Cookies",
+    "example2": "Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  },
+  "curlExamples": {
+    "registerUser": "curl -X POST http://localhost:5000/api/auth/register -H 'Content-Type: application/json' -d '{\"email\":\"john@example.com\",\"name\":\"John Doe\",\"password\":\"password123\"}'",
+    "loginUser": "curl -X POST http://localhost:5000/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"john@example.com\",\"password\":\"password123\"}'",
+    "getUserProfile": "curl -X GET http://localhost:5000/api/auth/user -H 'Authorization: Bearer YOUR_TOKEN_HERE'",
+    "createAccount": "curl -X POST http://localhost:5000/api/account/create -H 'Authorization: Bearer YOUR_TOKEN_HERE'",
+    "getUserAccount": "curl -X GET http://localhost:5000/api/account/user -H 'Authorization: Bearer YOUR_TOKEN_HERE'"
+  },
+  "errorCodes": {
+    "401": {
+      "description": "Unauthorized",
+      "causes": [
+        "Invalid or missing authentication token",
+        "Token has expired",
+        "Invalid credentials"
+      ]
+    },
+    "403": {
+      "description": "Forbidden",
+      "causes": [
+        "User does not have permission to access resource",
+        "User is not a system user"
+      ]
+    },
+    "404": {
+      "description": "Not Found",
+      "causes": [
+        "User not found",
+        "Account not found",
+        "Resource does not exist"
+      ]
+    },
+    "500": {
+      "description": "Internal Server Error",
+      "causes": [
+        "Server error occurred",
+        "Database error",
+        "Unexpected error"
+      ]
+    }
+  },
+  "environment": {
+    "development": "http://localhost:5000",
+    "production": "https://api.bankapp.com"
+  },
+  "notes": [
+    "All protected endpoints require valid JWT token",
+    "Tokens are valid for 3-5 days depending on endpoint",
+    "Token can be sent in Authorization header as Bearer token or in cookies",
+    "Email must be unique for registration",
+    "Password must be at least 6 characters long"
+  ]
+}

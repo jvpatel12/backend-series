@@ -1,0 +1,108 @@
+{
+  "register": {
+    "endpoint": "POST /api/auth/register",
+    "request": {
+      "email": "john@example.com",
+      "name": "John Doe",
+      "password": "password123"
+    },
+    "response_success": {
+      "statusCode": 201,
+      "body": {
+        "user": {
+          "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+          "email": "john@example.com",
+          "name": "John Doe"
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWY4YzFhMmIzZDRlNWY2ZzdoOGk5ajAiLCJpYXQiOjE3MTAwMDAwMDAsImV4cCI6MTcxMDI1ODAwMH0.abc123xyz",
+        "message": "user create succuessfully"
+      }
+    },
+    "response_error": {
+      "statusCode": 400,
+      "body": {
+        "message": "user already exists with email"
+      }
+    }
+  },
+  "login": {
+    "endpoint": "POST /api/auth/login",
+    "request": {
+      "email": "john@example.com",
+      "password": "password123"
+    },
+    "response_success": {
+      "statusCode": 201,
+      "body": {
+        "user": {
+          "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+          "email": "john@example.com",
+          "name": "John Doe"
+        },
+        "message": "user fetch the sucessfully",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWY4YzFhMmIzZDRlNWY2ZzdoOGk5ajAiLCJpYXQiOjE3MTAwMDAwMDAsImV4cCI6MTcxMDI1ODAwMH0.abc123xyz"
+      }
+    },
+    "response_error_email": {
+      "statusCode": 401,
+      "body": {
+        "message": "email is not find write correct email"
+      }
+    },
+    "response_error_password": {
+      "statusCode": 401,
+      "body": {
+        "message": "password is in correct add right password"
+      }
+    }
+  },
+  "getUser": {
+    "endpoint": "GET /api/auth/user",
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWY4YzFhMmIzZDRlNWY2ZzdoOGk5ajAiLCJpYXQiOjE3MTAwMDAwMDAsImV4cCI6MTcxMDI1ODAwMH0.abc123xyz",
+      "Content-Type": "application/json"
+    },
+    "response_success": {
+      "statusCode": 200,
+      "body": {
+        "user": {
+          "_id": "65f8c1a2b3d4e5f6g7h8i9j0",
+          "email": "john@example.com",
+          "name": "John Doe",
+          "createdAt": "2025-03-20T10:30:00.000Z",
+          "updatedAt": "2025-03-20T10:30:00.000Z"
+        },
+        "message": "User fetched successfully"
+      }
+    },
+    "response_error_invalid_token": {
+      "statusCode": 401,
+      "body": {
+        "message": "Unauthorized access token is invalid"
+      }
+    },
+    "response_error_missing_token": {
+      "statusCode": 401,
+      "body": {
+        "message": "Unauthorized access token is missing"
+      }
+    }
+  },
+  "test_users": [
+    {
+      "email": "alice@example.com",
+      "name": "Alice Johnson",
+      "password": "alice@123"
+    },
+    {
+      "email": "bob@example.com",
+      "name": "Bob Smith",
+      "password": "bob@123"
+    },
+    {
+      "email": "charlie@example.com",
+      "name": "Charlie Brown",
+      "password": "charlie@123"
+    }
+  ]
+}
